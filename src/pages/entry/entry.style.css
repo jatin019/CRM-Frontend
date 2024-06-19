@@ -1,0 +1,17 @@
+.entry-page {
+    height: 500vh; /* Adjust the height as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .custom-card {
+    background-color: #703bea; /* Change the background color */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for a slight 3D effect */
+  }
+  
+  .custom-card-body {
+    padding: 20px;
+  }
+  
