@@ -1,8 +1,14 @@
-import React from 'react'
-import { Table } from 'react-bootstrap'
-import PropTypes from 'prop-types'
+import React from 'react';
+import { Table } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export const TicketTable = ({ tickets }) => {
+  const linkStyle = {
+    color: 'blue', // Set the color to blue
+    textDecoration: 'none' // Remove underline
+  };
+
   return (
     <Table striped bordered hover>
       <thead>
@@ -18,7 +24,11 @@ export const TicketTable = ({ tickets }) => {
           tickets.map((row) => (
             <tr key={row.id}>
               <td>{row.id}</td>
-              <td>{row.subject}</td>
+              <td>
+                <Link to={`/ticket/${row.id}`} style={linkStyle}>
+                  {row.subject}
+                </Link>
+              </td>
               <td>{row.status}</td>
               <td>{row.addedAt}</td>
             </tr>
@@ -30,9 +40,9 @@ export const TicketTable = ({ tickets }) => {
         )}
       </tbody>
     </Table>
-  )
-}
+  );
+};
 
 TicketTable.propTypes = {
   tickets: PropTypes.array.isRequired,
-}
+};

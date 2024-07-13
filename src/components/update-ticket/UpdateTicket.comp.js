@@ -6,7 +6,7 @@ export const UpdateTicket = ({msg, handleOnChange,handleOnSubmit}) => {
     <Form onSubmit={handleOnSubmit}>
         <Form.Label>Reply</Form.Label><br />
        
-        <Form.Text>Please reply your message here or update the ticket</Form.Text>
+        <Form.Text>Please write a reply here or update the ticket</Form.Text>
         <Form.Control
         as="textarea"
         value={msg}
