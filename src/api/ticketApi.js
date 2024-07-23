@@ -6,7 +6,7 @@ return new Promise(async (resolve, reject) => {
    const result = await axios.get(
         'http://localhost:3001/v1/ticket',
         {headers: 
-            { Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdmlAZ21haWwuY29tIiwiaWF0IjoxNzIxNzM1NDQxLCJleHAiOjE3MjE3MzYzNDF9.4n7ISryQ9k6wmcG2Ruv-TpyucwRQwwPTe1JHP3Y8THk",
+            { Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdmlAZ21haWwuY29tIiwiaWF0IjoxNzIxNzU1MzY0LCJleHAiOjE3MjE3NTYyNjR9.CqqPEqqJy64fv0RiWpe5bvv2nQWDeey7Q7k4lxws3uU",
             }}        
             )
             resolve(result)
