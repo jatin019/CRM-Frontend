@@ -7,6 +7,8 @@ import './login.style.css';
 
 import { loginPending, loginSuccess, loginFail } from './loginSlice'
 import {userLogin} from '../../api/userApi'
+import {getUserProfile} from '../../pages/dashboard/userAction'
+
 export const LoginForm = ({ formSwitcher }) => {
   const dispatch = useDispatch()
   const history = useHistory()
@@ -40,7 +42,7 @@ export const LoginForm = ({ formSwitcher }) => {
 
     try{
       const isAuth = await userLogin({email, password})
-      console.log(isAuth)
+     
 
 
       if(isAuth.status === 'error'){
@@ -48,6 +50,7 @@ export const LoginForm = ({ formSwitcher }) => {
       }
 
       dispatch(loginSuccess());
+      dispatch(getUserProfile())
       history.push('/dashboard')
 
 
