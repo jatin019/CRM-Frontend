@@ -1,69 +1,58 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { PropTypes } from 'prop-types'
-import { Container, Row, Col, Form, Button , Spinner, Alert} from 'react-bootstrap'
-import './login.style.css'; 
+import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Container, Row, Col, Form, Button, Spinner, Alert } from 'react-bootstrap';
+import './login.style.css';
 
-import { loginPending, loginSuccess, loginFail } from './loginSlice'
-import {userLogin} from '../../api/userApi'
-import {getUserProfile} from '../../pages/dashboard/userAction'
+import { loginPending, loginSuccess, loginFail } from './loginSlice';
+import { userLogin } from '../../api/userApi';
+import { getUserProfile } from '../../pages/dashboard/userAction';
 
 export const LoginForm = ({ formSwitcher }) => {
-  const dispatch = useDispatch()
-  const history = useHistory()
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-  const {isLoading, isAuth, error} = useSelector(state => state.login)
+  const { isLoading, isAuth, error } = useSelector(state => state.login);
 
+  useEffect(() => {
+    if ( sessionStorage.getItem('accessJWT')) {
+      history.push('/dashboard');
+    }
+  }, [history, isAuth]);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('ravi@gmail.com');
+  const [password, setPassword] = useState('password1');
 
   const handleOnChange = e => {
     const { name, value } = e.target;
-    switch(name) {
-      case 'email':
-        setEmail(value)
-        break
-      case 'password':
-        setPassword(value)
-        break
-      default:
-        break
-    }
+    if (name === 'email') setEmail(value);
+    else if (name === 'password') setPassword(value);
   };
 
-  const handleOnSubmit = async (e) => {
-    e.preventDefault()
-    if(!email || !password) {
-      return alert("Fill up all the form");
+  const handleOnSubmit = async e => {
+    e.preventDefault();
+    if (!email || !password) {
+      return alert('Fill up all the form');
     }
     dispatch(loginPending());
 
-    try{
-      const isAuth = await userLogin({email, password})
-     
+    try {
+      const isAuth = await userLogin({ email, password });
 
-
-      if(isAuth.status === 'error'){
-        return dispatch(loginFail(isAuth.message))
+      if (isAuth.status === 'error') {
+        return dispatch(loginFail(isAuth.message));
       }
 
       dispatch(loginSuccess());
-      dispatch(getUserProfile())
-      history.push('/dashboard')
-
-
-      
-    } catch(error) {
+      dispatch(getUserProfile());
+      history.push('/dashboard');
+    } catch (error) {
       dispatch(loginFail(error.message));
     }
-
-
-    
   };
 
-  return (    
+  return (
     <Container>
       <Row>
         <Col>
@@ -80,9 +69,9 @@ export const LoginForm = ({ formSwitcher }) => {
                 onChange={handleOnChange}
                 placeholder='Enter email'
                 required
-              />          
+              />
             </Form.Group>
-            <br/>
+            <br />
             <Form.Group>
               <Form.Label>Password</Form.Label>
               <Form.Control
@@ -92,21 +81,21 @@ export const LoginForm = ({ formSwitcher }) => {
                 onChange={handleOnChange}
                 placeholder='Enter password'
                 required
-              />          
+              />
             </Form.Group>
-            <br/>
+            <br />
             <Button type='submit'>Login</Button>
-            {isLoading && <Spinner variant = "primary" animation="border" /> }
+            {isLoading && <Spinner variant='primary' animation='border' />}
           </Form>
           <br />
           <a href='#!' onClick={() => formSwitcher('reset')}>
             Forget Password
           </a>
         </Col>
-      </Row>   
+      </Row>
     </Container>
-  )
-}
+  );
+};
 
 LoginForm.propTypes = {
   formSwitcher: PropTypes.func.isRequired,

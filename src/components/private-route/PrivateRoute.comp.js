@@ -1,17 +1,33 @@
-import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import React, {useEffect} from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { loginSuccess } from '../login/loginSlice';
+import { fetchNewAccessJWT } from '../../api/userApi';
 
-const isAuthenticated = () => {
-  
-  return true; // Change this according to your authentication logic
-};
+
 
 export const PrivateRoute = ({ component: Component, ...rest }) => {
+  const dispatch = useDispatch()
+
+  const {isAuth} = useSelector((state) => state.login)
+
+  useEffect(() => {
+    const updateAccessJWT = async() => {
+      const result = await fetchNewAccessJWT()
+      result && dispatch(loginSuccess());
+    }
+    updateAccessJWT()
+   
+    sessionStorage.getItem("accessJWT") && dispatch(loginSuccess());
+  }, [dispatch])
+
+
+
   return (
     <Route
       {...rest}
       render={props =>
-        isAuthenticated() ? (
+        isAuth ? (
           <Component {...props} />
         ) : (
           <Redirect to="/" />
