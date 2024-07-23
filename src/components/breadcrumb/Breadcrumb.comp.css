@@ -1,0 +1,33 @@
+.breadcrumb-container {
+    background-color: #f0f0f0;
+    padding: 8px 15px; /* Padding for proper spacing */
+    margin: 5px auto; /* Center align with reduced margins */
+    max-width: 800px; /* Set a max-width to avoid stretching */
+    border-radius: 4px; /* Optional: Add rounded corners for a better look */
+    margin-top: 0;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add subtle shadow for better visual separation */
+  }
+  
+  .breadcrumb {
+    margin: 0; /* Ensure no extra margin */
+    padding: 5px 0; /* Adjusted padding to reduce space at the bottom */
+    background-color: transparent;
+    line-height: 1.2; /* Adjusted line-height to make text appear higher */
+  }
+  
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    color: #6c757d;
+    padding: 0 5px; /* Add spacing around the separator */
+  }
+  
+  .breadcrumb-item a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .breadcrumb-item.active {
+    color: #6c757d;
+  }
+  

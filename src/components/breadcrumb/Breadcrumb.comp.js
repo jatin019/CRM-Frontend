@@ -1,13 +1,17 @@
-import React from 'react'
-import { Breadcrumb } from 'react-bootstrap'
+import React from "react";
+import { Breadcrumb, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import "./Breadcrumb.comp.css";
 
-export const PageBreadcrumb = ({page}) => {
+export const PageBreadcrumb = ({ page }) => {
   return (
-    <Breadcrumb>
-    <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-    <Breadcrumb.Item active>{page}</Breadcrumb.Item>
-  </Breadcrumb>
-  )
-}
-
-
+    <Container fluid className="breadcrumb-container">
+      <Breadcrumb>
+        <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>
+          Home
+        </Breadcrumb.Item>
+        <Breadcrumb.Item active>{page}</Breadcrumb.Item>
+      </Breadcrumb>
+    </Container>
+  );
+};
