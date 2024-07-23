@@ -3,7 +3,7 @@ import { fetchTicketFail,
     fetchTicketSuccess, 
     fetchTicketLoading,
 searchTickets, } from './ticketsSlice.js';
-import { SearchForm } from '../../components/search-form/SearchForm.comp.js';
+
 
 import {getAllTickets} from '../../api/ticketApi.js'
 export const fetchAllTickets = () => async (dispatch) => {
