@@ -16,10 +16,10 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
       const result = await fetchNewAccessJWT()
       result && dispatch(loginSuccess());
     }
-    updateAccessJWT()
+    !sessionStorage.getItem('accessJWT') && localStorage.getItem('tmsSite') && updateAccessJWT();
    
-    sessionStorage.getItem("accessJWT") && dispatch(loginSuccess());
-  }, [dispatch])
+    !isAuth && sessionStorage.getItem("accessJWT") && dispatch(loginSuccess());
+  }, [dispatch, isAuth])
 
 
 
