@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     tickets: [],
     searchTicketList: [],
+    selectedTicket: [],
     isLoading: false,
     error: ''
 }
@@ -37,6 +38,26 @@ const ticketListSlice = createSlice({
          })      
 
         },
+        
+        fetchSingleTicketLoading: (state) => {
+            state.isLoading = true;           
+
+        },
+         fetchSingleTicketSuccess:  (state, {payload}) => {
+            state.selectedTicket = payload
+            state.isLoading = false;   
+            state.error = "";     
+
+        },
+
+
+        fetchSingleTicketFail:  (state, { payload }) => {
+           state.isLoading = false; 
+           state.error = payload;          
+
+        },
+
+
 
     }
 
@@ -49,6 +70,9 @@ export const {
     fetchTicketSuccess, 
     fetchTicketLoading,
     searchTickets,
+    fetchSingleTicketFail,
+    fetchSingleTicketLoading,
+    fetchSingleTicketSuccess,
 } = actions;
 
 export default reducer
