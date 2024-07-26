@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './add-ticket-form.style.css';
 import { shortText } from '../../utility/validation';
 import { openNewTicket } from './addTicketAction';
+import { restSuccessMsg } from './addTicketSlicer';
 
 const initialFrmDt = {
   subject: '',
@@ -26,7 +27,11 @@ export const AddTicketForm = () => {
   const [frmData, setFrmData] = useState(initialFrmDt);
   const [frmDataError, setFrmDataError] = useState(initialFrmError);
 
-  useEffect(() => {}, [frmData, frmDataError]);
+  useEffect(() => {
+    return () => {
+      successMsg && dispatch(restSuccessMsg());
+    }
+  }, [frmData, frmDataError, dispatch]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -112,7 +117,7 @@ export const AddTicketForm = () => {
             />
           </Form.Group>
           <br />
-          <Button type="submit" variant="info" block = "true">
+          <Button type="submit" variant="info" className="w-100">
             Raise Ticket
           </Button>
         </Form>

@@ -6,6 +6,7 @@ import { MessageHistory } from '../../components/message-history/MessageHistory.
 import { UpdateTicket } from '../../components/update-ticket/UpdateTicket.comp';
 import { useParams } from 'react-router-dom';
 import { closeTicket, fetchSingleTicket } from '../ticket-listing/ticketsAction';
+import { resetResponseMsg } from '../ticket-listing/ticketsSlice';
 
 export const Ticket = () => {
 
@@ -15,7 +16,12 @@ export const Ticket = () => {
 
     useEffect(() => {
         dispatch(fetchSingleTicket(tid));
-    }, [tid, dispatch]);
+
+        return () => {
+            (replyMsg || replyTicketError) && dispatch(resetResponseMsg())
+
+        }
+    }, [tid, dispatch, replyMsg, replyTicketError]);
 
     return (
         <Container>
@@ -28,7 +34,7 @@ export const Ticket = () => {
                 <Col>
                     {isLoading && <Spinner variant="primary" animation="border" />}
                     {error && <Alert variant="danger">{error}</Alert>}
-                    {replyTicketError && <Alert variant="danger">{replyTicketError}</Alert>}
+                    {replyTicketError && (<Alert variant="danger">{replyTicketError}</Alert>)}
                     {replyMsg && <Alert variant="success">{replyMsg}</Alert>}
                 </Col>
             </Row>
