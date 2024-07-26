@@ -1,14 +1,71 @@
-import React from 'react';
-import { Card, Form, Button, Row, Col } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { Card, Form, Button, Row, Col, Spinner, Alert } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+// import PropTypes from 'prop-types';
 import './add-ticket-form.style.css';
+import { shortText } from '../../utility/validation';
+import { openNewTicket } from './addTicketAction';
 
-export const AddTicketForm = ({ handleOnSubmit, handleOnChange,frmDt,frmDataError }) => {
-  console.log(frmDt);
-    return (
-    <Card className="mt-3 add-new-ticket bg-light" >
-        <h1 className='text-info text-center'>Add New Ticket</h1>
-        <hr />
+const initialFrmDt = {
+  subject: '',
+  issueDate: '',
+  message: '',
+};
+
+const initialFrmError = {
+  subject: false,
+  issueDate: false,
+  message: false,
+};
+
+export const AddTicketForm = () => {
+  const dispatch = useDispatch();
+
+  const { user: { name } } = useSelector(state => state.user);
+  const { isLoading, error, successMsg } = useSelector(state => state.openTicket);
+  const [frmData, setFrmData] = useState(initialFrmDt);
+  const [frmDataError, setFrmDataError] = useState(initialFrmError);
+
+  useEffect(() => {}, [frmData, frmDataError]);
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+
+    setFrmData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+
+    setFrmDataError(initialFrmError);
+
+    const isSubjectValid = await shortText(frmData.subject);
+    const newFrmDataError = {
+      ...initialFrmError,
+      subject: !isSubjectValid,
+    };
+
+    setFrmDataError(newFrmDataError);
+
+    if (isSubjectValid) {
+      dispatch(openNewTicket({ ...frmData, sender: name }));
+    } else {
+      return;
+    }
+  };
+
+  return (
+    <Card className="mt-3 add-new-ticket bg-light">
+      <h1 className='text-info text-center'>Add New Ticket</h1>
+      <hr />
+      <div>
+        {error && <Alert variant="danger">{error}</Alert>}
+        {successMsg && <Alert variant="primary">{successMsg}</Alert>}
+        {isLoading && <Spinner variant="primary" animation="border" />}
+      </div>
       <Card.Body>
         <Form autoComplete="off" onSubmit={handleOnSubmit}>
           <Form.Group as={Row}>
@@ -18,14 +75,14 @@ export const AddTicketForm = ({ handleOnSubmit, handleOnChange,frmDt,frmDataErro
             <Col sm={9}>
               <Form.Control
                 name="subject"
-                //minLength={3}
-                value={frmDt.subject}
+                value={frmData.subject}
                 onChange={handleOnChange}
                 placeholder="Subject"
                 required
               />
-              <Form.Text className='text-danger'>{frmDataError.subject && "Subject is required!" } </Form.Text>
-     
+              <Form.Text className='text-danger'>
+                {frmDataError.subject && "Subject is required!"}
+              </Form.Text>
             </Col>
           </Form.Group>
           <br />
@@ -37,7 +94,7 @@ export const AddTicketForm = ({ handleOnSubmit, handleOnChange,frmDt,frmDataErro
               <Form.Control
                 type="date"
                 name="issueDate"
-                value={frmDt.date}
+                value={frmData.issueDate}
                 onChange={handleOnChange}
                 required
               />
@@ -47,16 +104,16 @@ export const AddTicketForm = ({ handleOnSubmit, handleOnChange,frmDt,frmDataErro
             <Form.Label>Details</Form.Label>
             <Form.Control
               as="textarea"
-              name="detail"
+              name="message"
               rows="5"
-              value={frmDt.detail}
+              value={frmData.message}
               onChange={handleOnChange}
               required
             />
           </Form.Group>
           <br />
-          <Button type="submit" variant="info" block>
-            Submit
+          <Button type="submit" variant="info" block = "true">
+            Raise Ticket
           </Button>
         </Form>
       </Card.Body>
@@ -64,9 +121,9 @@ export const AddTicketForm = ({ handleOnSubmit, handleOnChange,frmDt,frmDataErro
   );
 };
 
-AddTicketForm.propTypes = {
-    handleOnSubmit: PropTypes.func.isRequired,
-    handleOnChange: PropTypes.func.isRequired,
-    frmDt: PropTypes.object.isRequired,
-    frmDataError: PropTypes.object.isRequired,
-}
+// AddTicketForm.propTypes = {
+//     handleOnSubmit: PropTypes.func.isRequired,
+//     handleOnChange: PropTypes.func.isRequired,
+//     frmDt: PropTypes.object.isRequired,
+//     frmDataError: PropTypes.object.isRequired,
+// }
